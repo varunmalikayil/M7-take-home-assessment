@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleService } from './schedule.service';
 import { ScheduleController } from './schedule.controller';
 import { ScheduleEntity } from './schedule.entity';
-import { NurseEntity } from 'src/nurse/nurse.entity';
+import { NurseEntity } from '../nurse/nurse.entity';
 
 @Module({
   // I had to add nurseEntity to the imports because we pull the preferences directly

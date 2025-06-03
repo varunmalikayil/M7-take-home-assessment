@@ -17,6 +17,11 @@ export class NurseController {
   async getPreferences(@Param('id') id: number): Promise<any> {
     return this.nurseService.getPreferences(Number(id));
   }
+
+  @Post(':id/reset')
+  resetPreferences(@Param('id') id: number) {
+    return this.nurseService.setPreferences(Number(id), []);
+  }
   
   // updating the preferences for a nurse
   @Post(':id/preferences')  

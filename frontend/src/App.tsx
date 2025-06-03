@@ -5,6 +5,7 @@ import "./App.css";
 import NursePreferences from "./components/NursePreferences";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Papa from "papaparse";
 
 function App() {
   const [nurses, setNurses] = useState<unknown[] | null>(null);
@@ -49,6 +50,28 @@ function App() {
     setSchedules(schedule);
     toast.success("Schedule successfully generated for the current week.");
     setActiveTab("schedule");
+  };
+
+  const handleDownloadCSV = () => {
+    if (!schedules) return;
+
+    // Prepare an array of objects for cleaner CSV headers
+    const csvData = schedules.map((entry: any) => ({
+      Day: entry.day,
+      Shift: entry.shift,
+      Nurse: entry.nurse,
+    }));
+
+    const csv = Papa.unparse(csvData);
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "schedule.csv";
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -173,40 +196,51 @@ function App() {
           {/* generate the schedule only on button click and make sure the rows that meet requirements are green
           if not they are red */}
           <button onClick={handleGenerateSchedule}>Generate Current Week's Schedule</button>
-          <div style={{ marginBottom: "1rem" }}></div>
           {schedules && (
-            <table>
-              <thead>
-                <tr>
-                  <th>Day</th>
-                  <th>Shift</th>
-                  <th>Assigned Nurses</th>
-                  <th>Shift Requirements Met</th>
-                </tr>
-              </thead>
-              <tbody>
-                {requirements &&
-                  requirements.map((req: any) => {
-                    const matchingEntries = schedules.filter(
-                      (entry: any) => entry.day === req.dayOfWeek && entry.shift === req.shift
-                    );
-                    const assignedNurses = matchingEntries.map((entry: any) => entry.nurse);
-                    const metRequirement = assignedNurses.length >= parseInt(req.nursesRequired, 10);
+            <>
+              <button onClick={handleDownloadCSV} style={{ marginLeft: "1rem" }}>
+                Download CSV
+              </button>
+              <div style={{ marginBottom: "1rem" }}></div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Day</th>
+                    <th>Shift</th>
+                    <th>Assigned Nurses</th>
+                    <th>Shift Requirements Met</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {requirements &&
+                    requirements.map((req: any) => {
+                      const matchingEntries = schedules.filter(
+                        (entry: any) =>
+                          entry.day === req.dayOfWeek && entry.shift === req.shift
+                      );
+                      const assignedNurses = matchingEntries.map(
+                        (entry: any) => entry.nurse
+                      );
+                      const metRequirement =
+                        assignedNurses.length >= parseInt(req.nursesRequired, 10);
 
-                    return (
-                      <tr
-                        key={`${req.dayOfWeek}-${req.shift}`}
-                        style={{ backgroundColor: metRequirement ? "#e6ffed" : "transparent" }}
-                      >
-                        <td>{req.dayOfWeek}</td>
-                        <td>{req.shift}</td>
-                        <td>{assignedNurses.join(", ")}</td>
-                        <td>{metRequirement ? "✅" : "❌"}</td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
+                      return (
+                        <tr
+                          key={`${req.dayOfWeek}-${req.shift}`}
+                          style={{
+                            backgroundColor: metRequirement ? "#e6ffed" : "transparent",
+                          }}
+                        >
+                          <td>{req.dayOfWeek}</td>
+                          <td>{req.shift}</td>
+                          <td>{assignedNurses.join(", ")}</td>
+                          <td>{metRequirement ? "✅" : "❌"}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </>
           )}
         </div>
       )}

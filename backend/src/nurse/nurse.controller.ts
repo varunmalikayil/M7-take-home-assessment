@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';  
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';  
 import { NurseService } from './nurse.service';  
 import { NurseEntity } from './nurse.entity';  
+import { UpdatePreferencesDto } from './nurse.dto';
 
 @Controller('nurses')  
 export class NurseController {  
@@ -11,9 +12,19 @@ export class NurseController {
     return this.nurseService.getNurses();
   }
 
-  @Post('preferences')  
-  async setPreferences(@Body('id') id: number, @Body('preferences') preferences: string): Promise<any> {
-    const parsedPreferences = JSON.parse(preferences);
-    return this.nurseService.setPreferences(id, parsedPreferences);
+  // getting the preferences for a nurse in particular
+  @Get(':id/preferences')
+  async getPreferences(@Param('id') id: number): Promise<any> {
+    return this.nurseService.getPreferences(Number(id));
+  }
+  
+  // updating the preferences for a nurse
+  @Post(':id/preferences')  
+  async setPreferences(
+    @Param('id') id: number, 
+    @Body() body: UpdatePreferencesDto
+  ): Promise<any> {
+    console.log(`Saving preferences for nurse ${id}:`, body.preferences);
+    return this.nurseService.setPreferences(Number(id), body.preferences);
   }
 }

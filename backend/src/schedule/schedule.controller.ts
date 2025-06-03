@@ -15,11 +15,13 @@ export class ScheduleController {
     return this.scheduleService.getScheduleById(id);
   }
 
+  // generating the schedule, since we're only looking at one week I don't use the dates
   @Post()
-  async generateSchedule(@Body('startDate') startDate: Date, @Body('endDate') endDate: Date): Promise<any> {
-    // TODO: Complete the implementation of this method
-    // Each time this method is called, a new schedule should be generated
-    // based on current nurse preferences and schedule requirements for the given dates
-    throw new NotImplementedException();
+  async generateSchedule(
+    @Body('startDate') startDate: Date,
+    @Body('endDate') endDate: Date
+  ): Promise<any> {
+    const schedule = await this.scheduleService.generateSchedule(startDate, endDate);
+    return schedule;
   }
 }

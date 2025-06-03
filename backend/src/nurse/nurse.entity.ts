@@ -17,7 +17,10 @@ export class NurseEntity {
   name: string;
 
   @Column('json', { nullable: true })
-  preferences: string;
+  // [
+  //   { "dayOfWeek": "Monday", "shifts": ["day", "night"] }
+  // ]
+  preferences: { dayOfWeek: string; shifts: string[] }[];
 
   @OneToMany(() => ShiftEntity, shift => shift.nurse)
   shifts: ShiftEntity[];

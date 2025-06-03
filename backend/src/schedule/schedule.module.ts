@@ -3,9 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleService } from './schedule.service';
 import { ScheduleController } from './schedule.controller';
 import { ScheduleEntity } from './schedule.entity';
+import { NurseEntity } from 'src/nurse/nurse.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ScheduleEntity])],
+  // I had to add nurseEntity to the imports because we pull the preferences directly
+  imports: [TypeOrmModule.forFeature([ScheduleEntity, NurseEntity])],
   exports: [TypeOrmModule],
   providers: [ScheduleService],
   controllers: [ScheduleController],

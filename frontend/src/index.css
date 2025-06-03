@@ -1,3 +1,7 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -25,10 +29,14 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 0 1rem;
   display: flex;
-  place-items: center;
+  flex-direction: column;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #f9fafb;
+  color: #111827;
 }
 
 h1 {
@@ -58,18 +66,20 @@ button:focus-visible {
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 2rem;
 }
 th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #ccc;
+  padding: 12px;
   text-align: left;
-}
-tr:nth-child(even) {
-  background-color: #f2f2f2;
+  font-size: 0.95rem;
 }
 th {
-  background-color: #a5aded;
-  color: #333;
+  background-color: #e0e7ff;
+  color: #1e293b;
+}
+tr:nth-child(even) {
+  background-color: #f8fafc;
 }
 
 @media (prefers-color-scheme: light) {
@@ -83,4 +93,15 @@ th {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Card style for improved layout and spacing */
+.card {
+  width: 100%;
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }

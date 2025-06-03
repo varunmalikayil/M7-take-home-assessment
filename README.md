@@ -71,3 +71,29 @@ We will evaluate your work based on the following criteria, in order of importan
 Feel free to be creative in how you choose to represent the schedule on the frontend. Comment your code where necessary so we can understand your thought process.
 
 We look forward to seeing what you create!
+
+## What was implemented
+
+- **Nurse preference entry UI and backend**:
+  - A tabbed UI where users can select preferred shifts per day for each nurse.
+  - Validations ensure at least 3 shifts must be selected to submit preferences.
+  - Preferences are stored in the database and retrieved via dedicated endpoints.
+
+- **Schedule generation logic**:
+  - Preferences and shift requirements are used to generate a fair weekly schedule.
+  - Nurses who prefer a shift are prioritized, and shifts are assigned evenly across the week.
+
+- **Frontend features**:
+  - Visual display of nurse preferences, shift requirements, and the generated schedule.
+  - Toast notifications for submission success/failure and schedule generation.
+  - Styled buttons and table views for clarity and usability.
+
+- **Testing**:
+  - End-to-end tests were implemented using Jest for the backend:
+    - Posting valid preferences.
+    - Posting invalid preferences (e.g., fewer than 3 shifts).
+    - Retrieving saved preferences.
+
+- **CSV Export**:
+  - A "Download CSV" button was added to allow exporting the generated weekly schedule as a CSV file.
+  - The download option is only visible when a schedule has been generated and displayed.
